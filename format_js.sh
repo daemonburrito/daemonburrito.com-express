@@ -6,4 +6,5 @@ for FILE in $FILES
 do
 	TMPFILE=`mktemp`
 	esformatter $FILE > $TMPFILE
+	mv $TMPFILE $FILE
 done
