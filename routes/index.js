@@ -1,10 +1,11 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express'),
+	router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res) {
 	res.render('index', {
-		title: "Scott's blog"
+		title: req.config.title,
+		byline: req.config.byline
 	});
 });
 

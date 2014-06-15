@@ -15,6 +15,12 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// config
+app.use(function (req, res, next) {
+	req.config = require('./config');
+	next();
+});
+
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
