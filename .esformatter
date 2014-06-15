@@ -1,0 +1,20 @@
+{
+	"preset": "default",
+	"indent": {
+		"value": "\t"
+	},
+	"whiteSpace": {
+		"before": {
+		},
+		"after": {
+			"FunctionReservedWord": 1,
+			"FunctionName": 1
+		}
+	},
+	"lineBreak": {
+		"before": {
+			"ElseIfStatement": ">=1",
+			"ElseStatement": ">=1"
+		}
+	}
+}
