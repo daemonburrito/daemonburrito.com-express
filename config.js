@@ -1,4 +1,5 @@
 module.exports = {
-	'title': "Scott Drake's Blog",
-	'byline': "The adventures of a Developer Philosopher"
+	title: "Scott Drake's Blog",
+	byline: "The adventures of a Developer Philosopher",
+	post: false
 };

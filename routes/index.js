@@ -3,10 +3,8 @@ var express = require('express'),
 
 /* GET home page. */
 router.get('/', function (req, res) {
-	res.render('index', {
-		title: req.config.title,
-		byline: req.config.byline
-	});
+	var context = req.config;
+	res.render('index', context);
 });
 
 module.exports = router;
