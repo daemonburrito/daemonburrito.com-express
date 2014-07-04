@@ -17,7 +17,25 @@ var express = require('express'),
 	pg_host = process.env.BLOG_PG_HOST || 'localhost',
 	pg_db = process.env.BLOG_PG_DB,
 
+	blog_util = require('./util.js'),
 	app = express();
+
+var constring = blog_util.make_pg_constring(pg_user, pg_pass, pg_host, pg_db);
+
+pg.connect(constring, function (err, client, done) {
+	if (err) {
+		console.log(err);
+	}
+
+	client.query('select * from posts', function (err, result) {
+		console.log(result);
+		done();
+
+		if (err) {
+			console.log(err);
+		}
+	});
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
