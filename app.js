@@ -1,15 +1,23 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('static-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var express = require('express'),
+	path = require('path'),
+	favicon = require('static-favicon'),
+	logger = require('morgan'),
+	cookieParser = require('cookie-parser'),
+	bodyParser = require('body-parser'),
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var posts = require('./routes/posts')
+	// routes
+	routes = require('./routes/index'),
+	users = require('./routes/users'),
+	posts = require('./routes/posts'),
 
-var app = express();
+	// postgres
+	pg = require('pg'),
+	pg_user = process.env.BLOG_PG_USER,
+	pg_pass = process.env.BLOG_PG_PASS,
+	pg_host = process.env.BLOG_PG_HOST || 'localhost',
+	pg_db = process.env.BLOG_PG_DB,
+
+	app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
