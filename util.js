@@ -1,13 +1,9 @@
 var format_regex = /{(\d)}/g;
 
 String.prototype.format = function (vals) {
-	var new_s = '';
-
-	new_s = this.replace(format_regex, function (match, p) {
+	return this.replace(format_regex, function (match, p) {
 		return vals[p];
 	});
-
-	return new_s;
 };
 
 var make_pg_constring = function (user, pass, host, db) {

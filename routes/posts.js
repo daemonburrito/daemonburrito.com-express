@@ -21,7 +21,7 @@ router.param('post_id', function (req, res, next, post_id) {
 router.get('/:post_id', function (req, res, next) {
 	if (req.post_id) {
 		var md_text,
-			context = merge(req.config, req);
+			context = merge({}, req.config, req);
 
 		fs.readFile('md/esformatter.mkd', function (err, data) {
 			md_text = data.toString();

@@ -22,6 +22,7 @@ var express = require('express'),
 
 var constring = blog_util.make_pg_constring(pg_user, pg_pass, pg_host, pg_db);
 
+/*
 pg.connect(constring, function (err, client, done) {
 	if (err) {
 		console.log(err);
@@ -36,6 +37,7 @@ pg.connect(constring, function (err, client, done) {
 		}
 	});
 });
+*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
