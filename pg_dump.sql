@@ -9,14 +9,14 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -29,23 +29,21 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: posts; Type: TABLE; Schema: public; Owner: daemonburrito_blog; Tablespace: 
+-- Name: posts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE posts (
     creation_date date,
     published_date date,
     body text,
-    path character varying(80),
+    path character varying(200),
     title character varying(80),
     posts_id integer NOT NULL
 );
 
 
-ALTER TABLE public.posts OWNER TO daemonburrito_blog;
-
 --
--- Name: posts_posts_id_seq; Type: SEQUENCE; Schema: public; Owner: daemonburrito_blog
+-- Name: posts_posts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE posts_posts_id_seq
@@ -56,24 +54,22 @@ CREATE SEQUENCE posts_posts_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.posts_posts_id_seq OWNER TO daemonburrito_blog;
-
 --
--- Name: posts_posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: daemonburrito_blog
+-- Name: posts_posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE posts_posts_id_seq OWNED BY posts.posts_id;
 
 
 --
--- Name: posts_id; Type: DEFAULT; Schema: public; Owner: daemonburrito_blog
+-- Name: posts_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY posts ALTER COLUMN posts_id SET DEFAULT nextval('posts_posts_id_seq'::regclass);
 
 
 --
--- Name: posts_pkey; Type: CONSTRAINT; Schema: public; Owner: daemonburrito_blog; Tablespace: 
+-- Name: posts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY posts
@@ -81,7 +77,7 @@ ALTER TABLE ONLY posts
 
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: postgres
+-- Name: public; Type: ACL; Schema: -; Owner: -
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;

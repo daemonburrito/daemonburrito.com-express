@@ -19,7 +19,7 @@ var make_pg_constring = function (user, pass, host, db) {
 
 // Make a string suitable for an IN query.
 var make_placeholder_string = function (arr) {
-	 return arr.map(function (v, i) {
+	return arr.map(function (v, i) {
 		return '$' + (i + 1);
 	}).join(',');
 };
