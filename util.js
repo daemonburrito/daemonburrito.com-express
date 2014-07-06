@@ -1,4 +1,5 @@
 // daemonburrito.com utils
+"use strict";
 
 // Convenient, traditional String.format(). Takes an Array instead of using
 // arguments (faster).
@@ -16,6 +17,12 @@ var make_pg_constring = function (user, pass, host, db) {
 	return 'postgres://{0}:{1}@{2}/{3}'.format(arguments);
 }
 
+// Make a string suitable for an IN query.
+var make_placeholder_string = function (arr) {
+	 return arr.map(function (v, i) {
+		return '$' + (i + 1);
+	}).join(',');
+};
 
 // db connection
 var db = function (fn) {
@@ -30,6 +37,22 @@ var db = function (fn) {
 	pg.connect(constring, fn);
 };
 
+var title_regex = /^#\s([^\n]+)/
+var insert_post_file = function (s, filename) {
+	var r = title_regex.exec(s),
+		title = r[1];
+
+	db(function (err, client, done) {
+		var query = 'INSERT INTO posts (title, body, path) VALUES ($1, $2, $3);';
+		client.query(query, [title, s, filename], function (err, result) {
+			done();
+			if (err) {
+				console.log(err);
+			}
+		});
+	});
+};
+
 
 // Refresh posts
 //
@@ -38,16 +61,33 @@ var refresh_posts = function () {
 	// get a list of md files in the configured path
 	var fs = require('fs'),
 		_path = require('path'),
+		fs = require('fs'),
 		paths = Object.create(require('./config').post_paths),
 		all_files = [];
 
 	var compare_posts = function () {
-		console.log(all_files);
-		/*
+		var query = 'SELECT title, body, path FROM posts ' +
+					'WHERE path IN (' + make_placeholder_string(all_files) + ');'
+
 		db(function (err, client, done) {
-			client.query();
+			// query for posts.path IN all_files
+			client.query(query, all_files, function (err, result) {
+				done();
+				if (err) {
+					console.log(err);
+				}
+
+				if (result.rows.length === 0) {
+					// all are new
+					all_files.forEach(function (filename) {
+						fs.readFile(filename, {encoding: 'utf-8'}, function (err, data) {
+							insert_post_file(data, filename);
+						});
+					});
+				}
+			});
 		});
-	   */
+
 	};
 
 	paths.forEach(function (path) {
