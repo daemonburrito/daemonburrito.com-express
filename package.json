@@ -17,6 +17,7 @@
 	"highlight.js": "*",
 	"marked": "*",
 	"redis": "*",
-	"merge": "*"
+	"merge": "*",
+	"connect-repl": "0.0.4"
   }
 }

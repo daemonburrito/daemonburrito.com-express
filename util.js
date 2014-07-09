@@ -37,7 +37,7 @@ var db = function (fn) {
 	pg.connect(constring, fn);
 };
 
-var title_regex = /^#\s([^\n]+)/
+var title_regex = /^#\s([^\n\r]+)/
 var insert_post_file = function (s, filename) {
 	var r = title_regex.exec(s),
 		title = r[1];
@@ -63,7 +63,9 @@ var refresh_posts = function () {
 		_path = require('path'),
 		fs = require('fs'),
 		paths = Object.create(require('./config').post_paths),
-		all_files = [];
+		md_regex = /(md|mkd)$/,
+		all_files = [],
+		new_paths = [];
 
 	var compare_posts = function () {
 		var query = 'SELECT title, body, path FROM posts ' +
@@ -80,14 +82,32 @@ var refresh_posts = function () {
 				if (result.rows.length === 0) {
 					// all are new
 					all_files.forEach(function (filename) {
+						console.log('New file: ' + filename);
 						fs.readFile(filename, {encoding: 'utf-8'}, function (err, data) {
 							insert_post_file(data, filename);
 						});
 					});
 				}
+				else {
+					// we have to compare
+					new_paths = [];
+					result.rows.forEach(function (post) {
+						//console.log('row.path: ' + post.path);
+						if (all_files.indexOf(post.path) === -1) {
+							new_paths.push(post.path);
+						}
+					});
+					//console.log(existing_paths);
+
+					new_paths.forEach(function (fp) {
+						console.log('New file: ' + fp);
+						fs.readFile(fp, {encoding: 'utf-8'}, function (err, data) {
+							insert_post_file(data, fp);
+						});
+					});
+				}
 			});
 		});
-
 	};
 
 	paths.forEach(function (path) {
@@ -103,7 +123,9 @@ var refresh_posts = function () {
 			}
 
 			files_in_path.forEach(function (file) {
-				all_files.push(_path.join(path, file));
+				if (md_regex.test(file)){
+					all_files.push(_path.join(path, file));
+				}
 			});
 
 			paths.pop();
@@ -117,6 +139,7 @@ var refresh_posts = function () {
 
 
 module.exports = {
+	db: db,
 	make_pg_constring: make_pg_constring,
 	refresh_posts: refresh_posts
 }
