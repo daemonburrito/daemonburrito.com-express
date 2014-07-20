@@ -9,10 +9,13 @@
 			<h1><%= title %></h1>
 			<p class="byline"><%= byline %></p>
 		</header>
-		<% if (post) { %>
+		<% if (posts) {  posts.forEach(function (post) { %>
 		<article>
-			<%- post %>
+			<header>
+				<h1><%- post.title %></h1>
+			</header>
+			<%- post.body %>
 		</article>
-		<% } %>
+		<% })} %>
 	</body>
 </html>

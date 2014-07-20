@@ -7,7 +7,6 @@ var express = require('express'),
 
 	// routes
 	routes = require('./routes/index'),
-	users = require('./routes/users'),
 	posts = require('./routes/posts'),
 
 	// postgres
@@ -19,25 +18,6 @@ var express = require('express'),
 
 	blog_util = require('./util.js'),
 	app = express();
-
-var constring = blog_util.make_pg_constring(pg_user, pg_pass, pg_host, pg_db);
-
-/*
-pg.connect(constring, function (err, client, done) {
-	if (err) {
-		console.log(err);
-	}
-
-	client.query('select * from posts', function (err, result) {
-		console.log(result);
-		done();
-
-		if (err) {
-			console.log(err);
-		}
-	});
-});
-*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -57,7 +37,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
 app.use('/posts', posts);
 
 /// catch 404 and forward to error handler
