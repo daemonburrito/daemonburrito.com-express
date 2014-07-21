@@ -4,8 +4,7 @@ var express = require('express'),
 
 /* GET home page. */
 router.get('/', function (req, res) {
-	var context = req.config,
-		latest_posts = [];
+	var context = req.config;
 
 	posts.get_latest(function (posts) {
 		context.posts = posts;

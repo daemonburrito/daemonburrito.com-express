@@ -18,6 +18,7 @@
 	"marked": "*",
 	"redis": "*",
 	"merge": "*",
-	"connect-repl": "0.0.4"
+	"connect-repl": "0.0.4",
+	"underscore": "1.6.0"
   }
 }

@@ -1,5 +1,6 @@
 // daemonburrito.com utils
 "use strict";
+var _ = require('underscore');
 
 // Convenient, traditional String.format(). Takes an Array instead of using
 // arguments (faster).
@@ -10,19 +11,20 @@ String.prototype.format = function (vals) {
 	});
 };
 
-
 // Make the connect string for pg. pg also uses this string as a key in its
 // table of connections.
-var make_pg_constring = function (user, pass, host, db) {
+var make_pg_constring = _.memoize(function (user, pass, host, db) {
 	return 'postgres://{0}:{1}@{2}/{3}'.format(arguments);
-}
+});
 
 // Make a string suitable for an IN query.
-var make_placeholder_string = function (arr) {
+// Note: the underscore docs disagree with the source. `_memoize` uses the whole `arguments`
+// pseudo-array to make keys, not just the first one.
+var make_placeholder_string = _.memoize(function (arr) {
 	return arr.map(function (v, i) {
 		return '$' + (i + 1);
 	}).join(',');
-};
+});
 
 // db connection
 var db = function (fn) {
