@@ -11,6 +11,12 @@ String.prototype.format = function (vals) {
 	});
 };
 
+// For a friendly message that we forgot to set env vars.
+function DBEnvNotSet () {
+	this.message = 'Database not configured.';
+	this.name = 'DBEnvNotSet';
+}
+
 // Make the connect string for pg. pg also uses this string as a key in its
 // table of connections.
 var make_pg_constring = _.memoize(function (user, pass, host, db) {
@@ -29,14 +35,16 @@ var make_placeholder_string = _.memoize(function (arr) {
 // db connection
 var db = function (fn) {
 	var pg = require('pg'),
-	pg_user = process.env.BLOG_PG_USER,
-	pg_pass = process.env.BLOG_PG_PASS,
+	pg_user = process.env.BLOG_PG_USER || false,
+	pg_pass = process.env.BLOG_PG_PASS || false,
 	pg_host = process.env.BLOG_PG_HOST || 'localhost',
-	pg_db = process.env.BLOG_PG_DB,
+	pg_db = process.env.BLOG_PG_DB || false;
 
-	constring = make_pg_constring(pg_user, pg_pass, pg_host, pg_db);
+	if (!pg_user || !pg_pass || !pg_db) {
+		throw new DBEnvNotSet();
+	}
 
-	pg.connect(constring, fn);
+	pg.connect(make_pg_constring(pg_user, pg_pass, pg_host, pg_db), fn);
 };
 
 var title_regex = /^#\s([^\n\r]+)/
